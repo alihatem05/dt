@@ -3,10 +3,10 @@
 Line-Following Robot - PID Controller (Component 1, Port 50102)
 RECEIVES: x (CAN 20), y (CAN 21), theta (CAN 22)
 SENDS   : omega (CAN 23)
-Reference: y_ref = 0  (track the x-axis)
+Reference: y_ref based on path type
 """
 from __future__ import print_function
-import struct, sys, argparse
+import struct, sys, argparse, math
 
 sys.path.append('pythonGateways/')
 import VsiCommonPythonApi  as vsiCommonPythonApi
@@ -40,7 +40,8 @@ class Controller:
         self.portNum     = 50102
 
         self.pid = PID(args.Kp, args.Ki, args.Kd)
-        self.y_ref = 0.0   # lateral reference (m)
+        self.path_type = args.path
+        self.y_ref = 0.0   # will be updated
 
         self.x, self.y, self.theta, self.omega = 0., 0., 0., 0.
         self.simulationStep      = 0
@@ -48,6 +49,14 @@ class Controller:
 
     def _pack(self, v):   return struct.pack('=d', v)
     def _unpack(self, d): return struct.unpack('=d', d[:8])[0]
+
+    def get_y_ref(self, x):
+        if self.path_type == 'straight':
+            return 0.0
+        elif self.path_type == 'curved':
+            return 0.5 * math.sin(0.1 * x)
+        else:
+            return 0.0
 
     def sendSignal(self, can_id, value):
         vsiCanPythonGateway.setCanId(can_id)
@@ -87,13 +96,14 @@ class Controller:
                 self.theta = self.recvSignal(CAN_THETA)
 
                 # 2) COMPUTE PID  (control lateral error)
+                self.y_ref = self.get_y_ref(self.x)
                 self.omega = self.pid.step(self.y_ref, self.y)
 
                 # 3) SEND steering command
                 self.sendSignal(CAN_OMEGA, self.omega)
 
                 t = vsiCommonPythonApi.getSimulationTimeInNs()
-                print(f"[CTRL]  t={t}ns  y={self.y:.4f}"
+                print(f"[CTRL]  t={t}ns  y={self.y:.4f}  y_ref={self.y_ref:.4f}"
                       f"  err={self.y_ref-self.y:.4f}  ω={self.omega:.4f}")
 
                 # 4) ADVANCE
@@ -128,6 +138,7 @@ def main():
     p.add_argument('--Kp', type=float, default=2.0)
     p.add_argument('--Ki', type=float, default=0.1)
     p.add_argument('--Kd', type=float, default=0.5)
+    p.add_argument('--path', default='straight', choices=['straight','curved'])
     Controller(p.parse_args()).mainThread()
 
 if __name__ == '__main__':

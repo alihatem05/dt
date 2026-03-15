@@ -4,6 +4,7 @@ KP     = 2.0
 KI     = 0.1
 KD     = 0.5
 NOISE  = 0.0
+PATH   = straight
 
 sim:
 	vsiSim LineFollowingRobot.dt
@@ -11,13 +12,13 @@ sim:
 plant:
 	cd $(shell pwd) && PYTHONPATH=. python3 src/plant/plant.py \
 	  --domain=$(DOMAIN) --server-url=$(SERVER) \
-	  --noise=$(NOISE)
+	  --noise=$(NOISE) --path=$(PATH)
 
 controller:
 	cd $(shell pwd) && PYTHONPATH=. python3 src/controller/controller.py \
 	  --domain=$(DOMAIN) --server-url=$(SERVER) \
-	  --Kp=$(KP) --Ki=$(KI) --Kd=$(KD)
+	  --Kp=$(KP) --Ki=$(KI) --Kd=$(KD) --path=$(PATH)
 
 visualizer:
 	cd $(shell pwd) && PYTHONPATH=. python3 src/visualizer/visualizer.py \
-	  --domain=$(DOMAIN) --server-url=$(SERVER)
+	  --domain=$(DOMAIN) --server-url=$(SERVER) --label=Kp$(KP)_Ki$(KI)_Kd$(KD) --path=$(PATH)

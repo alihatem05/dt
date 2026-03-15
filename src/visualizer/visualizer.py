@@ -22,6 +22,7 @@ class Visualizer:
         self.domain      = args.domain
         self.portNum     = 50103
         self.label       = args.label
+        self.path_type   = args.path
 
         self.x = self.y = self.theta = self.omega = 0.0
         self.simulationStep = self.totalSimulationTime = 0
@@ -38,6 +39,14 @@ class Visualizer:
 
     def _unpack(self, data): return struct.unpack('=d', data[:8])[0]
 
+    def get_y_ref(self, x):
+        if self.path_type == 'straight':
+            return 0.0
+        elif self.path_type == 'curved':
+            return 0.5 * math.sin(0.1 * x)
+        else:
+            return 0.0
+
     def recvSignal(self, can_id):
         return self._unpack(vsiCanPythonGateway.recvVariableFromCanPacket(8, 0, 64, can_id))
 
@@ -49,17 +58,35 @@ class Visualizer:
         label = self.label
         sse   = sum(self.steady_errors)/len(self.steady_errors) if self.steady_errors else 0
 
+        # Compute settling time
+        threshold = 0.05  # 5cm
+        settling_time = self.time_hist[-1]
+        errors_hist = [y - self.get_y_ref(x) for y, x in zip(self.y_hist, self.x_hist)]
+        for i in range(len(errors_hist)):
+            if all(abs(e) < threshold for e in errors_hist[i:]):
+                settling_time = self.time_hist[i]
+                break
+
         fig, axes = plt.subplots(2, 2, figsize=(14, 10))
         fig.suptitle(f'Line-Following Robot — {label}', fontsize=14, fontweight='bold')
 
         axes[0,0].plot(self.x_hist, self.y_hist, 'b-', linewidth=1, label='Robot path')
-        axes[0,0].axhline(0, color='r', linestyle='--', linewidth=2, label='Reference y=0')
+        if self.path_type == 'straight':
+            axes[0,0].axhline(0, color='r', linestyle='--', linewidth=2, label='Reference y=0')
+        else:
+            import numpy as np
+            x_min, x_max = min(self.x_hist), max(self.x_hist)
+            x_path = np.linspace(x_min, x_max, 100)
+            y_path = [self.get_y_ref(x) for x in x_path]
+            axes[0,0].plot(x_path, y_path, 'r--', linewidth=2, label='Reference path')
         axes[0,0].set_xlabel('x (m)'); axes[0,0].set_ylabel('y (m)')
         axes[0,0].set_title('2D Trajectory'); axes[0,0].legend(); axes[0,0].grid(True)
 
-        axes[0,1].plot(self.time_hist, self.y_hist, 'b-', linewidth=1)
+        errors_hist = [y - self.get_y_ref(x) for y, x in zip(self.y_hist, self.x_hist)]
+
+        axes[0,1].plot(self.time_hist, errors_hist, 'b-', linewidth=1)
         axes[0,1].axhline(0, color='r', linestyle='--', linewidth=2, label='Reference')
-        axes[0,1].set_xlabel('Time (s)'); axes[0,1].set_ylabel('y (m)')
+        axes[0,1].set_xlabel('Time (s)'); axes[0,1].set_ylabel('Lateral Error y - y_ref (m)')
         axes[0,1].set_title('Lateral Error vs Time'); axes[0,1].legend(); axes[0,1].grid(True)
 
         axes[1,0].plot(self.time_hist, self.omega_hist, 'g-', linewidth=1)
@@ -74,9 +101,9 @@ class Visualizer:
 
         kpi = (f"Label: {label}\n"
                f"Max Overshoot : {self.max_overshoot:.4f} m\n"
-               f"Final Error   : {abs(self.y_hist[-1]):.4f} m\n"
+               f"Final Error   : {abs(errors_hist[-1]):.4f} m\n"
                f"Steady-State  : {sse:.4f} m\n"
-               f"Duration      : {self.time_hist[-1]:.1f} s")
+               f"Settling Time : {settling_time:.1f} s")
         fig.text(0.02, 0.01, kpi, fontsize=9,
                  bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
@@ -113,12 +140,13 @@ class Visualizer:
                     self.omega = self.recvSignal(CAN_OMEGA)
 
                     t_ns = vsiCommonPythonApi.getSimulationTimeInNs()
-                    err  = abs(self.y)
+                    y_ref = self.get_y_ref(self.x)
+                    err  = self.y - y_ref
 
-                    if err > self.max_overshoot:
-                        self.max_overshoot = err
+                    if abs(err) > self.max_overshoot:
+                        self.max_overshoot = abs(err)
                     if t_ns > self.STEADY_START:
-                        self.steady_errors.append(err)
+                        self.steady_errors.append(abs(err))
 
                     self.time_hist.append(t_ns * 1e-9)
                     self.x_hist.append(self.x)
@@ -169,6 +197,7 @@ def main():
     p.add_argument('--domain',     default='AF_UNIX')
     p.add_argument('--server-url', default='localhost')
     p.add_argument('--label',      default='Kp2.0_Ki0.1_Kd0.5')
+    p.add_argument('--path', default='straight', choices=['straight','curved'])
     Visualizer(p.parse_args()).mainThread()
 
 if __name__ == '__main__':

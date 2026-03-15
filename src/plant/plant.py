@@ -27,10 +27,10 @@ class Plant:
         self.portNum     = 50101
         self.noise_std   = args.noise
 
-        # Robot state  (start off the line so the controller has work to do)
+        # Robot state  (random spawn near the path)
         self.x     =  0.0
-        self.y     =  0.5   # 0.5 m lateral offset
-        self.theta =  0.1   # slight heading error
+        self.y     =  random.uniform(-0.5, 0.5)   # lateral offset
+        self.theta =  random.uniform(-0.2, 0.2)   # heading error
         self.omega =  0.0   # control input (received from controller)
 
         self.simulationStep      = 0
