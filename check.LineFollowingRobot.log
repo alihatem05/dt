@@ -1,0 +1,6 @@
+Script started on 2026-03-15 23:36:04+00:00 [TERM="xterm" TTY="/dev/pts/4" COLUMNS="80" LINES="24"]
+./FabricServer --domain=AF_INET --cmdFile=
+make: ./FabricServer: No such file or directory
+make: *** [Makefile.server:7: sim] Error 127
+
+Script done on 2026-03-15 23:36:04+00:00 [COMMAND_EXIT_CODE="2"]
