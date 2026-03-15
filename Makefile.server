@@ -1,0 +1,9 @@
+all: build sim
+compile:
+	@echo "No compile needed"
+build:
+	@echo "No build needed"
+sim:
+	./FabricServer --domain=AF_INET --cmdFile=$(VSISIM_CMD_FILE)
+clean:
+	@echo "Nothing to clean"
