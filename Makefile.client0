@@ -1,9 +1,14 @@
+DOMAIN ?= AF_INET
+SERVER ?= localhost
+NOISE  ?= 0.0
+PATH_TYPE ?= straight
+
 all: build sim
 compile:
 	@echo "No compile needed"
 build:
 	@echo "No build needed"
 sim:
-	cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/plant/plant.py --domain=AF_INET --server-url=localhost; bash
+	cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/plant/plant.py --domain=$(DOMAIN) --server-url=$(SERVER) --noise=$(NOISE) --path=$(PATH_TYPE); bash
 clean:
 	@echo "Nothing to clean"

@@ -1,24 +1,38 @@
 #!/bin/bash
-# Usage: ./run_experiment.sh <Kp> <Ki> <Kd> <label>
-KP=$1
-KI=$2
-KD=$3
-LABEL=$4
+set -euo pipefail
+
+# Usage: ./run_experiment.sh <Kp> <Ki> <Kd> <label> [path] [noise] [domain] [server]
+KP=${1:?Missing Kp}
+KI=${2:?Missing Ki}
+KD=${3:?Missing Kd}
+LABEL=${4:?Missing label}
+PATH_TYPE=${5:-straight}
+NOISE=${6:-0.0}
+DOMAIN=${7:-AF_INET}
+SERVER=${8:-localhost}
 
 cd ~/LineFollower_Success
 
-echo "=== Running experiment: Kp=$KP Ki=$KI Kd=$KD ==="
+echo "=== Running: $LABEL (Kp=$KP Ki=$KI Kd=$KD path=$PATH_TYPE noise=$NOISE) ==="
 
-# Update controller gains
-sed -i "s/p.add_argument('--Kp'.*/p.add_argument('--Kp', type=float, default=$KP)/" src/controller/controller.py
-sed -i "s/p.add_argument('--Ki'.*/p.add_argument('--Ki', type=float, default=$KI)/" src/controller/controller.py
-sed -i "s/p.add_argument('--Kd'.*/p.add_argument('--Kd', type=float, default=$KD)/" src/controller/controller.py
+# Clear previous outputs and stale FIFOs from crashed runs.
+rm -f visualizer_log.csv trajectory_data.csv
+rm -f vsiInputFifo vsiInterruptFifo vsiOutputFifo
 
-# Run simulation
-vsiSim LineFollowingRobot.dt
+DOMAIN="$DOMAIN" \
+SERVER="$SERVER" \
+KP="$KP" KI="$KI" KD="$KD" \
+PATH_TYPE="$PATH_TYPE" \
+NOISE="$NOISE" \
+LABEL="$LABEL" \
+vsiSim LineFollowingRobot.dt --run
 
-# Save results
-cp visualizer_log.csv results_${LABEL}.csv
-cp trajectory_data.csv trajectory_${LABEL}.csv
+if [[ ! -f visualizer_log.csv || ! -f trajectory_data.csv ]]; then
+	echo "ERROR: Simulation completed but expected CSV outputs were not generated."
+	exit 1
+fi
 
-echo "=== Done: results saved as results_${LABEL}.csv ==="
+cp visualizer_log.csv "results_${LABEL}.csv"
+cp trajectory_data.csv "trajectory_${LABEL}.csv"
+
+echo "=== Done: results_${LABEL}.csv and trajectory_${LABEL}.csv ==="

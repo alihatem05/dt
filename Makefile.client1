@@ -1,9 +1,16 @@
+DOMAIN ?= AF_INET
+SERVER ?= localhost
+KP ?= 2.0
+KI ?= 0.1
+KD ?= 0.5
+PATH_TYPE ?= straight
+
 all: build sim
 compile:
 	@echo "No compile needed"
 build:
 	@echo "No build needed"
 sim:
-	cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/controller/controller.py --domain=AF_INET --server-url=localhost; bash
+	cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/controller/controller.py --domain=$(DOMAIN) --server-url=$(SERVER) --Kp=$(KP) --Ki=$(KI) --Kd=$(KD) --path=$(PATH_TYPE); bash
 clean:
 	@echo "Nothing to clean"

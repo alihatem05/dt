@@ -43,7 +43,21 @@ class Visualizer:
         if self.path_type == 'straight':
             return 0.0
         elif self.path_type == 'curved':
-            return 0.5 * math.sin(0.1 * x)
+            # Piecewise circular arcs: same reference used by the controller.
+            radius = 20.0
+            seg = 15.0
+
+            def arc_height(u):
+                u = max(0.0, min(seg, u))
+                return radius - math.sqrt(max(0.0, radius * radius - u * u))
+
+            if x <= seg:
+                return arc_height(x)
+            if x <= 2.0 * seg:
+                return arc_height(seg) - arc_height(x - seg)
+            if x <= 3.0 * seg:
+                return arc_height(x - 2.0 * seg)
+            return arc_height(seg)
         else:
             return 0.0
 
@@ -186,9 +200,12 @@ class Visualizer:
             self.save_matplotlib()
 
         sse = sum(self.steady_errors)/len(self.steady_errors) if self.steady_errors else 0
+        final_err = 0.0
+        if self.y_hist and self.x_hist:
+            final_err = abs(self.y_hist[-1] - self.get_y_ref(self.x_hist[-1]))
         print(f"\n=== KPI SUMMARY ({self.label}) ===")
         print(f"Max overshoot    : {self.max_overshoot:.4f} m")
-        print(f"Final error      : {abs(self.y_hist[-1]) if self.y_hist else 0:.4f} m")
+        print(f"Final error      : {final_err:.4f} m")
         print(f"Steady-state err : {sse:.4f} m")
         print(f"Sim duration     : {self.time_hist[-1] if self.time_hist else 0:.1f} s")
 

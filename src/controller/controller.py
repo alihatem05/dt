@@ -54,7 +54,21 @@ class Controller:
         if self.path_type == 'straight':
             return 0.0
         elif self.path_type == 'curved':
-            return 0.5 * math.sin(0.1 * x)
+            # Piecewise circular arcs: rise, fall, then rise again.
+            radius = 20.0
+            seg = 15.0
+
+            def arc_height(u):
+                u = max(0.0, min(seg, u))
+                return radius - math.sqrt(max(0.0, radius * radius - u * u))
+
+            if x <= seg:
+                return arc_height(x)
+            if x <= 2.0 * seg:
+                return arc_height(seg) - arc_height(x - seg)
+            if x <= 3.0 * seg:
+                return arc_height(x - 2.0 * seg)
+            return arc_height(seg)
         else:
             return 0.0
 

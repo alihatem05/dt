@@ -1,161 +1,135 @@
-# Line-Following Robot with PID Control - Final Report
+# Line-Following Robot with PID Control
 
-## Project Overview
+## 1. Overview
 
-This project implements a complete simulation of a differential-drive robot that follows predefined paths using PID control. The system consists of three distributed clients communicating over the Innexis Virtual System Interconnect (IVSI) backplane, demonstrating real-time control systems principles.
+This project implements a differential-drive line-following robot using a PID controller over the Innexis Virtual System Interconnect (IVSI) backplane.
 
-## System Architecture
+System structure:
+- Client 0: Plant/Simulator (`src/plant/plant.py`)
+- Client 1: Controller (`src/controller/controller.py`)
+- Client 2: Visualizer/Logger (`src/visualizer/visualizer.py`)
 
-### Three-Client Architecture
-- **Plant (Simulator)**: Models robot kinematics and environment
-- **Controller**: Implements PID control algorithm
-- **Visualizer**: Logs data and generates performance analysis
+## 2. Modeling and Assumptions
 
-### Communication Protocol
-- CAN bus over IVSI with dedicated message IDs:
-  - CAN 20: Robot x-position
-  - CAN 21: Robot y-position
-  - CAN 22: Robot heading angle
-  - CAN 23: Steering command
+Robot kinematics use the unicycle model:
 
-## Mathematical Modeling
-
-### Robot Kinematics
-The robot follows the unicycle model with constant forward velocity:
-
-```
-dx/dt = v * cos(θ)
-dy/dt = v * sin(θ)
-dθ/dt = ω
+```text
+dx/dt = v cos(theta)
+dy/dt = v sin(theta)
+dtheta/dt = omega
 ```
 
-Where:
-- `v = 1.0 m/s` (constant forward speed)
-- `ω` (steering rate from controller)
-- `θ` (heading angle)
+Assumptions used in implementation:
+- Constant forward speed: `v = 1.0 m/s`
+- Discrete integration timestep: `dt = 0.001 s`
+- Steering command saturation: `omega in [-3.0, 3.0] rad/s`
+- Noise model (E3): additive Gaussian disturbance on lateral velocity
 
-### Control Algorithm
-PID controller minimizes lateral tracking error:
+## 3. Control Design
 
+Lateral tracking is controlled by PID:
+
+```text
+e(t) = y_ref(x) - y
+omega = Kp*e + Ki*integral(e) + Kd*de/dt
 ```
-ω = Kp * e + Ki * ∫e dt + Kd * de/dt
-```
 
-Where:
-- `e = y_ref(x) - y` (lateral error)
-- Anti-windup: output clamped to ±3.0 rad/s
+Implemented path references:
+- Straight: `y_ref = 0`
+- Curved: piecewise circular-arc profile (rise/fall/rise sections)
 
-### Path Definitions
-- **Straight Path**: `y_ref(x) = 0`
-- **Curved Path**: `y_ref(x) = 0.5 * sin(0.1 * x)`
+## 4. IVSI/CAN Interface
 
-## Implementation Details
+CAN IDs:
+- `20`: x
+- `21`: y
+- `22`: theta
+- `23`: omega
 
-### Plant (Simulator)
-- Implements unicycle kinematics with Euler integration (DT = 0.001s)
-- Adds Gaussian noise to lateral velocity for disturbance simulation
-- Random initial conditions: y ∈ [-0.5, 0.5]m, θ ∈ [-0.2, 0.2]rad
-- Logs complete trajectory to CSV for analysis
+Each client connects through VSI Python gateways and runs in lockstep with simulation time.
 
-### Controller
-- Pure PID implementation with integral windup protection
-- Path-aware reference generation
-- Real-time error computation and control output
+## 5. Experiments
 
-### Visualizer
-- Receives all state data via CAN bus
-- Computes performance metrics in real-time
-- Generates comprehensive plots and KPI summaries
-- Settling time calculation (5cm error band)
+### E1: PID Gain Sweep (Straight Path)
 
-## Experimental Design
+Script: `run_all_experiments.sh`
 
-### E1: PID Gain Sweep
-**Objective**: Find optimal PID gains for straight path tracking
-**Parameters**: 5 gain combinations tested
-- Kp=0.5, Ki=0.05, Kd=0.1 (Conservative)
-- Kp=2.0, Ki=0.1, Kd=0.5 (Baseline)
-- Kp=3.0, Ki=0.2, Kd=0.8 (Balanced)
-- Kp=5.0, Ki=0.5, Kd=1.0 (Aggressive)
-- Kp=10.0, Ki=1.0, Kd=2.0 (Very Aggressive)
+Gain sets:
+- `(0.5, 0.05, 0.1)`
+- `(2.0, 0.1, 0.5)`
+- `(3.0, 0.2, 0.8)`
+- `(5.0, 0.5, 1.0)`
+- `(10.0, 1.0, 2.0)`
+
+Each set runs multiple random spawns (`RUNS_PER_GAIN`, default 3).
 
 ### E2: Curved Path Robustness
-**Objective**: Evaluate controller performance on curved trajectories
-**Parameters**: Best E1 gains on sinusoidal path
+
+Script: `run_experiment_E2.sh`
+
+Runs the baseline best controller on curved reference with multiple random spawns.
 
 ### E3: Noise and Disturbance Rejection
-**Objective**: Assess robustness under sensor noise
-**Parameters**: Baseline gains with σ ∈ [0, 0.01, 0.05, 0.1, 0.2] m/s
 
-### E4: PD vs PID Ablation Study
-**Objective**: Compare integral action benefits
-**Parameters**: PD (Ki=0) vs PID (Ki=0.1) on curved path with noise
+Script: `run_experiment_E3.sh`
 
-## Expected Results
+Noise levels tested: `0.0, 0.01, 0.05, 0.1, 0.2` (m/s), each with multiple runs.
 
-### Performance Metrics
-- **Max Overshoot**: Peak lateral error
-- **Settling Time**: Time to stay within 5cm error band
-- **Steady-State Error**: Average error after 5 seconds
-- **Final Error**: Error at simulation end
+### E4: PD vs PID Ablation
 
-### E1 Analysis
-**Best Performance**: Kp=2.0, Ki=0.1, Kd=0.5
-- Balanced response without excessive oscillation
-- Good disturbance rejection
-- Reasonable settling time
+Script: `run_experiment_E4.sh`
 
-**Trends**:
-- Higher Kp: Faster response, more overshoot
-- Higher Ki: Better steady-state, potential instability
-- Higher Kd: Damping, reduced oscillations
+Compares:
+- PD: `Ki = 0.0`
+- PID: `Ki = 0.1`
 
-### E2 Analysis
-**Expected Degradation**:
-- Increased tracking error due to path curvature
-- Higher control effort required
-- Potential steady-state offset on curved sections
+Both tested on curved path with noise `0.05`.
 
-### E3 Analysis
-**Noise Impact**:
-- Steady-state error increases with noise level
-- Settling time may increase
-- Control signal becomes noisier
+## 6. Output Files
 
-### E4 Analysis
-**PD vs PID**:
-- PD: Faster response, higher steady-state error
-- PID: Slower response, better steady-state performance
-- Trade-off between speed and accuracy
+Per-run logs:
+- `trajectory_data.csv`
+- `visualizer_log.csv`
 
-## Code Quality and Architecture
+Archived experiment outputs:
+- `e1_results_*.csv`, `e1_traj_*.csv`
+- `e2_results_*.csv`, `e2_traj_*.csv`
+- `e3_results_*.csv`, `e3_traj_*.csv`
+- `e4_results_*.csv`, `e4_traj_*.csv`
 
-### Strengths
-- Clean separation of concerns across clients
-- Proper error handling and bounds checking
-- Modular design with configurable parameters
-- Comprehensive logging and visualization
-- Real-time performance metrics
+Plots:
+- `results_<label>.png`
 
-### VSI Integration
-- Proper CAN message handling
-- Synchronization with simulation time
-- Robust communication protocol
-- Error recovery mechanisms
+## 7. KPIs
 
-## Conclusion
+Computed by visualizer and analysis scripts:
+- Max overshoot
+- Final error
+- Steady-state error
+- Settling time (5 cm band)
 
-This implementation demonstrates a complete PID-controlled line-following system with:
-- Accurate kinematic modeling
-- Robust control algorithm
-- Comprehensive experimental validation
-- Professional code architecture
+Use `aggregate_results.py` to summarize all experiment CSV files.
 
-The system successfully addresses all project requirements, providing a solid foundation for understanding advanced control systems and distributed simulation architectures.
+## 8. Results Summary Table
 
-## Deliverables
-- ✅ Complete source code with documentation
-- ✅ Automated experiment scripts
-- ✅ Performance analysis tools
-- ✅ Comprehensive technical report
-- ⏳ Screencast demonstration (code walkthrough available)
+Populate this section after running all experiments.
+
+| Experiment | Best/Compared Config | Overshoot (m) | Settling Time (s) | Steady-State Error (m) | Notes |
+|---|---|---:|---:|---:|---|
+| E1 | TODO | TODO | TODO | TODO | TODO |
+| E2 | TODO | TODO | TODO | TODO | TODO |
+| E3 | TODO | TODO | TODO | TODO | TODO |
+| E4 | PD vs PID | TODO | TODO | TODO | TODO |
+
+## 9. Discussion
+
+Suggested discussion points:
+- Effect of increasing `Kp` on rise speed and overshoot
+- Effect of `Ki` on removing residual bias
+- Effect of `Kd` on damping oscillations
+- Why curved tracking is harder than straight tracking
+- Why PID outperforms PD for steady-state bias rejection under noise
+
+## 10. Conclusion
+
+The repository now contains a complete 3-client IVSI line-following implementation with automated E1-E4 experiment scripts, curved-path support, noise testing, and KPI generation. Final numerical conclusions should be filled from the generated CSV outputs and `aggregate_results.py` summary.
