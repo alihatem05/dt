@@ -1,5 +1,5 @@
-Script started on 2026-03-16 00:57:59+00:00 [TERM="xterm" TTY="/dev/pts/35" COLUMNS="80" LINES="24"]
-cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/visualizer/visualizer.py --domain=AF_INET --server-url=localhost --label=Kp0.5_Ki0.05_Kd0.1_run1 --path=straight; bash
+Script started on 2026-03-16 01:03:05+00:00 [TERM="xterm" TTY="/dev/pts/26" COLUMNS="80" LINES="24"]
+cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/visualizer/visualizer.py --domain=AF_INET --server-url=localhost --label=Kp2.0_Ki0.1_Kd0.5_curved_run1 --path=curved; bash
 +=+ XLVIP-INFO: XlTlmMessageLayer::connectToServer():
 +=+    Connecting clientId=':remoteSession2' to 'server@localhost' ...
 +=+    Successfully connected 'client :remoteSession2' to 'server@localhost'
@@ -11,164 +11,197 @@ cd /home/ubuntu/LineFollower_Success && PYTHONPATH=. python3 src/visualizer/visu
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:timeServerConduit2
-           localClientConduitHandle=0x5a638c9c1768
-           remoteServerProxyConduitHandle=0x1de2c970
+           localClientConduitHandle=0x56716c19a8c8
+           remoteServerProxyConduitHandle=0x329c9970
 +=+ XLVIP-INFO: XlTlmMessageLayer::connect():
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:resetServerConduit2
-           localClientConduitHandle=0x5a638d004f88
-           remoteServerProxyConduitHandle=0x1de28fa0
+           localClientConduitHandle=0x56716c7052c8
+           remoteServerProxyConduitHandle=0x329c5fa0
 +=+ XLVIP-INFO: XlTlmMessageLayer::connect():
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:txConfigPort2
-           localClientConduitHandle=0x5a638ce6e070
-           remoteServerProxyConduitHandle=0x1de3b6c0
+           localClientConduitHandle=0x56716c6e1a20
+           remoteServerProxyConduitHandle=0x329d86c0
 +=+ XLVIP-INFO: XlTlmMessageLayer::connect():
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:rxConfigPort2
-           localClientConduitHandle=0x5a638c9c30a0
-           remoteServerProxyConduitHandle=0x1de37ac0
+           localClientConduitHandle=0x56716c1ac880
+           remoteServerProxyConduitHandle=0x329d4ac0
 +=+ INFO: ... successfully connected to TLM FabricServer !
 +=+ XLVIP-INFO: XlTlmMessageLayer::connect():
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:txCanFrameConduit2
-           localClientConduitHandle=0x5a638ce68330
-           remoteServerProxyConduitHandle=0x1de319b0
+           localClientConduitHandle=0x56716c587bd0
+           remoteServerProxyConduitHandle=0x329ce9b0
 +=+ XLVIP-INFO: XlTlmMessageLayer::connect():
 +=+    Successfully connected this remote client conduit into the TLM fabric server:
 +=+        clientId=:remoteSession2
 +=+        conduitId=:rxCanFrameConduit2
-           localClientConduitHandle=0x5a638c969e20
-           remoteServerProxyConduitHandle=0x1de30840
-[VIZ] t=0.1s  y=-0.2447  err=-0.2447
-[VIZ] t=0.2s  y=-0.2555  err=-0.2555
-[VIZ] t=0.3s  y=-0.2648  err=-0.2648
-[VIZ] t=0.4s  y=-0.2727  err=-0.2727
-[VIZ] t=0.5s  y=-0.2791  err=-0.2791
-[VIZ] t=0.6s  y=-0.2840  err=-0.2840
-[VIZ] t=0.7s  y=-0.2874  err=-0.2874
-[VIZ] t=0.8s  y=-0.2892  err=-0.2892
-[VIZ] t=0.9s  y=-0.2895  err=-0.2895
-[VIZ] t=1.0s  y=-0.2881  err=-0.2881
-[VIZ] t=1.1s  y=-0.2853  err=-0.2853
-[VIZ] t=1.2s  y=-0.2809  err=-0.2809
-[VIZ] t=1.3s  y=-0.2749  err=-0.2749
-[VIZ] t=1.4s  y=-0.2675  err=-0.2675
-[VIZ] t=1.5s  y=-0.2587  err=-0.2587
-[VIZ] t=1.6s  y=-0.2484  err=-0.2484
-[VIZ] t=1.7s  y=-0.2368  err=-0.2368
-[VIZ] t=1.8s  y=-0.2240  err=-0.2240
-[VIZ] t=1.9s  y=-0.2099  err=-0.2099
-[VIZ] t=2.0s  y=-0.1946  err=-0.1946
-[VIZ] t=2.1s  y=-0.1783  err=-0.1783
-[VIZ] t=2.2s  y=-0.1610  err=-0.1610
-[VIZ] t=2.3s  y=-0.1429  err=-0.1429
-[VIZ] t=2.4s  y=-0.1239  err=-0.1239
-[VIZ] t=2.5s  y=-0.1042  err=-0.1042
-[VIZ] t=2.6s  y=-0.0839  err=-0.0839
-[VIZ] t=2.7s  y=-0.0631  err=-0.0631
-[VIZ] t=2.8s  y=-0.0419  err=-0.0419
-[VIZ] t=2.9s  y=-0.0203  err=-0.0203
-[VIZ] t=3.0s  y=0.0014  err=0.0014
-[VIZ] t=3.1s  y=0.0232  err=0.0232
-[VIZ] t=3.2s  y=0.0450  err=0.0450
-[VIZ] t=3.3s  y=0.0666  err=0.0666
-[VIZ] t=3.4s  y=0.0881  err=0.0881
-[VIZ] t=3.5s  y=0.1092  err=0.1092
-[VIZ] t=3.6s  y=0.1298  err=0.1298
-[VIZ] t=3.7s  y=0.1499  err=0.1499
-[VIZ] t=3.8s  y=0.1694  err=0.1694
-[VIZ] t=3.9s  y=0.1881  err=0.1881
-[VIZ] t=4.0s  y=0.2060  err=0.2060
-[VIZ] t=4.1s  y=0.2229  err=0.2229
-[VIZ] t=4.2s  y=0.2388  err=0.2388
-[VIZ] t=4.3s  y=0.2537  err=0.2537
-[VIZ] t=4.4s  y=0.2673  err=0.2673
-[VIZ] t=4.5s  y=0.2798  err=0.2798
-[VIZ] t=4.6s  y=0.2909  err=0.2909
-[VIZ] t=4.7s  y=0.3006  err=0.3006
-[VIZ] t=4.8s  y=0.3090  err=0.3090
-[VIZ] t=4.9s  y=0.3158  err=0.3158
-[VIZ] t=5.0s  y=0.3212  err=0.3212
-[VIZ] t=5.1s  y=0.3251  err=0.3251
-[VIZ] t=5.2s  y=0.3274  err=0.3274
-[VIZ] t=5.3s  y=0.3281  err=0.3281
-[VIZ] t=5.4s  y=0.3273  err=0.3273
-[VIZ] t=5.5s  y=0.3249  err=0.3249
-[VIZ] t=5.6s  y=0.3209  err=0.3209
-[VIZ] t=5.7s  y=0.3155  err=0.3155
-[VIZ] t=5.8s  y=0.3085  err=0.3085
-[VIZ] t=5.9s  y=0.3001  err=0.3001
-[VIZ] t=6.0s  y=0.2902  err=0.2902
-[VIZ] t=6.1s  y=0.2790  err=0.2790
-[VIZ] t=6.2s  y=0.2664  err=0.2664
-[VIZ] t=6.3s  y=0.2526  err=0.2526
-[VIZ] t=6.4s  y=0.2376  err=0.2376
-[VIZ] t=6.5s  y=0.2215  err=0.2215
-[VIZ] t=6.6s  y=0.2043  err=0.2043
-[VIZ] t=6.7s  y=0.1863  err=0.1863
-[VIZ] t=6.8s  y=0.1673  err=0.1673
-[VIZ] t=6.9s  y=0.1476  err=0.1476
-[VIZ] t=7.0s  y=0.1273  err=0.1273
-[VIZ] t=7.1s  y=0.1064  err=0.1064
-[VIZ] t=7.2s  y=0.0850  err=0.0850
-[VIZ] t=7.3s  y=0.0632  err=0.0632
-[VIZ] t=7.4s  y=0.0412  err=0.0412
-[VIZ] t=7.5s  y=0.0191  err=0.0191
-[VIZ] t=7.6s  y=-0.0031  err=-0.0031
-[VIZ] t=7.7s  y=-0.0252  err=-0.0252
-[VIZ] t=7.8s  y=-0.0471  err=-0.0471
-[VIZ] t=7.9s  y=-0.0688  err=-0.0688
-[VIZ] t=8.0s  y=-0.0901  err=-0.0901
-[VIZ] t=8.1s  y=-0.1108  err=-0.1108
-[VIZ] t=8.2s  y=-0.1310  err=-0.1310
-[VIZ] t=8.3s  y=-0.1505  err=-0.1505
-[VIZ] t=8.4s  y=-0.1692  err=-0.1692
-[VIZ] t=8.5s  y=-0.1870  err=-0.1870
-[VIZ] t=8.6s  y=-0.2038  err=-0.2038
-[VIZ] t=8.7s  y=-0.2196  err=-0.2196
-[VIZ] t=8.8s  y=-0.2343  err=-0.2343
-[VIZ] t=8.9s  y=-0.2477  err=-0.2477
-[VIZ] t=9.0s  y=-0.2599  err=-0.2599
-[VIZ] t=9.1s  y=-0.2707  err=-0.2707
-[VIZ] t=9.2s  y=-0.2801  err=-0.2801
-[VIZ] t=9.3s  y=-0.2881  err=-0.2881
-[VIZ] t=9.4s  y=-0.2946  err=-0.2946
-[VIZ] t=9.5s  y=-0.2995  err=-0.2995
-[VIZ] t=9.6s  y=-0.3030  err=-0.3030
-[VIZ] t=9.7s  y=-0.3048  err=-0.3048
-[VIZ] t=9.8s  y=-0.3051  err=-0.3051
-[VIZ] t=9.9s  y=-0.3038  err=-0.3038
-[VIZ] t=10.0s  y=-0.3010  err=-0.3010
-[VIZ] t=10.1s  y=-0.2966  err=-0.2966
-[VIZ] t=10.2s  y=-0.2907  err=-0.2907
-[VIZ] t=10.3s  y=-0.2832  err=-0.2832
-[VIZ] t=10.4s  y=-0.2744  err=-0.2744
-[VIZ] t=10.5s  y=-0.2641  err=-0.2641
-[VIZ] t=10.6s  y=-0.2524  err=-0.2524
-[VIZ] t=10.7s  y=-0.2395  err=-0.2395
-[VIZ] t=10.8s  y=-0.2253  err=-0.2253
-[VIZ] t=10.9s  y=-0.2100  err=-0.2100
-[VIZ] t=11.0s  y=-0.1935  err=-0.1935
-[VIZ] t=11.1s  y=-0.1761  err=-0.1761
-[VIZ] t=11.2s  y=-0.1578  err=-0.1578
-[VIZ] t=11.3s  y=-0.1387  err=-0.1387
-[VIZ] t=11.4s  y=-0.1188  err=-0.1188
-[VIZ] t=11.5s  y=-0.0983  err=-0.0983
-[VIZ] t=11.6s  y=-0.0773  err=-0.0773
-[VIZ] t=11.7s  y=-0.0558  err=-0.0558
-[VIZ] t=11.8s  y=-0.0341  err=-0.0341
-[VIZ] t=11.9s  y=-0.0121  err=-0.0121
-[VIZ] t=12.0s  y=0.0099  err=0.0099
-[VIZ] t=12.1s  y=0.0320  err=0.0320
-[VIZ] t=12.2s  y=0.0539  err=0.0539
-[VIZ] t=12.3s  y=0.0756  err=0.0756
-[VIZ] t=12.4s  y=0.0970  err=0.0970
-[VIZ] t=12.5s  y=0.1180  err=0.1180
-[VIZ] t=12.6s  y=0.1384  err=0.1384
-[VIZ] t=12.7s  y=0.1581  err=0.1581
-[VIZ] t=12.8s  y=0.1772  err=0.1772
+           localClientConduitHandle=0x56716c159b70
+           remoteServerProxyConduitHandle=0x329cd840
+[VIZ] t=0.1s  y=-0.1883  err=-0.1886
+[VIZ] t=0.2s  y=-0.1972  err=-0.1981
+[VIZ] t=0.3s  y=-0.2016  err=-0.2038
+[VIZ] t=0.4s  y=-0.2018  err=-0.2057
+[VIZ] t=0.5s  y=-0.1978  err=-0.2039
+[VIZ] t=0.6s  y=-0.1897  err=-0.1986
+[VIZ] t=0.7s  y=-0.1780  err=-0.1901
+[VIZ] t=0.8s  y=-0.1628  err=-0.1786
+[VIZ] t=0.9s  y=-0.1446  err=-0.1645
+[VIZ] t=1.0s  y=-0.1237  err=-0.1483
+[VIZ] t=1.1s  y=-0.1006  err=-0.1302
+[VIZ] t=1.2s  y=-0.0757  err=-0.1108
+[VIZ] t=1.3s  y=-0.0494  err=-0.0904
+[VIZ] t=1.4s  y=-0.0221  err=-0.0695
+[VIZ] t=1.5s  y=0.0058  err=-0.0485
+[VIZ] t=1.6s  y=0.0338  err=-0.0278
+[VIZ] t=1.7s  y=0.0616  err=-0.0078
+[VIZ] t=1.8s  y=0.0889  err=0.0112
+[VIZ] t=1.9s  y=0.1153  err=0.0289
+[VIZ] t=2.0s  y=0.1406  err=0.0449
+[VIZ] t=2.1s  y=0.1646  err=0.0590
+[VIZ] t=2.2s  y=0.1869  err=0.0711
+[VIZ] t=2.3s  y=0.2076  err=0.0810
+[VIZ] t=2.4s  y=0.2265  err=0.0885
+[VIZ] t=2.5s  y=0.2435  err=0.0937
+[VIZ] t=2.6s  y=0.2587  err=0.0964
+[VIZ] t=2.7s  y=0.2721  err=0.0969
+[VIZ] t=2.8s  y=0.2838  err=0.0951
+[VIZ] t=2.9s  y=0.2939  err=0.0912
+[VIZ] t=3.0s  y=0.3027  err=0.0853
+[VIZ] t=3.1s  y=0.3101  err=0.0778
+[VIZ] t=3.2s  y=0.3167  err=0.0687
+[VIZ] t=3.3s  y=0.3224  err=0.0583
+[VIZ] t=3.4s  y=0.3277  err=0.0469
+[VIZ] t=3.5s  y=0.3327  err=0.0348
+[VIZ] t=3.6s  y=0.3378  err=0.0222
+[VIZ] t=3.7s  y=0.3432  err=0.0093
+[VIZ] t=3.8s  y=0.3492  err=-0.0034
+[VIZ] t=3.9s  y=0.3559  err=-0.0159
+[VIZ] t=4.0s  y=0.3637  err=-0.0278
+[VIZ] t=4.1s  y=0.3728  err=-0.0390
+[VIZ] t=4.2s  y=0.3833  err=-0.0493
+[VIZ] t=4.3s  y=0.3954  err=-0.0585
+[VIZ] t=4.4s  y=0.4092  err=-0.0664
+[VIZ] t=4.5s  y=0.4248  err=-0.0730
+[VIZ] t=4.6s  y=0.4423  err=-0.0782
+[VIZ] t=4.7s  y=0.4617  err=-0.0819
+[VIZ] t=4.8s  y=0.4830  err=-0.0841
+[VIZ] t=4.9s  y=0.5062  err=-0.0848
+[VIZ] t=5.0s  y=0.5311  err=-0.0842
+[VIZ] t=5.1s  y=0.5579  err=-0.0822
+[VIZ] t=5.2s  y=0.5863  err=-0.0789
+[VIZ] t=5.3s  y=0.6162  err=-0.0745
+[VIZ] t=5.4s  y=0.6475  err=-0.0691
+[VIZ] t=5.5s  y=0.6800  err=-0.0628
+[VIZ] t=5.6s  y=0.7136  err=-0.0558
+[VIZ] t=5.7s  y=0.7482  err=-0.0483
+[VIZ] t=5.8s  y=0.7835  err=-0.0405
+[VIZ] t=5.9s  y=0.8195  err=-0.0324
+[VIZ] t=6.0s  y=0.8559  err=-0.0243
+[VIZ] t=6.1s  y=0.8926  err=-0.0164
+[VIZ] t=6.2s  y=0.9295  err=-0.0088
+[VIZ] t=6.3s  y=0.9664  err=-0.0016
+[VIZ] t=6.4s  y=1.0033  err=0.0050
+[VIZ] t=6.5s  y=1.0401  err=0.0110
+[VIZ] t=6.6s  y=1.0766  err=0.0162
+[VIZ] t=6.7s  y=1.1129  err=0.0205
+[VIZ] t=6.8s  y=1.1488  err=0.0240
+[VIZ] t=6.9s  y=1.1843  err=0.0266
+[VIZ] t=7.0s  y=1.2195  err=0.0282
+[VIZ] t=7.1s  y=1.2543  err=0.0288
+[VIZ] t=7.2s  y=1.2888  err=0.0286
+[VIZ] t=7.3s  y=1.3230  err=0.0275
+[VIZ] t=7.4s  y=1.3570  err=0.0256
+[VIZ] t=7.5s  y=1.3909  err=0.0230
+[VIZ] t=7.6s  y=1.4246  err=0.0198
+[VIZ] t=7.7s  y=1.4584  err=0.0160
+[VIZ] t=7.8s  y=1.4922  err=0.0117
+[VIZ] t=7.9s  y=1.5263  err=0.0072
+[VIZ] t=8.0s  y=1.5606  err=0.0024
+[VIZ] t=8.1s  y=1.5953  err=-0.0025
+[VIZ] t=8.2s  y=1.6305  err=-0.0075
+[VIZ] t=8.3s  y=1.6663  err=-0.0123
+[VIZ] t=8.4s  y=1.7028  err=-0.0169
+[VIZ] t=8.5s  y=1.7399  err=-0.0212
+[VIZ] t=8.6s  y=1.7779  err=-0.0251
+[VIZ] t=8.7s  y=1.8167  err=-0.0287
+[VIZ] t=8.8s  y=1.8564  err=-0.0317
+[VIZ] t=8.9s  y=1.8970  err=-0.0341
+[VIZ] t=9.0s  y=1.9385  err=-0.0360
+[VIZ] t=9.1s  y=1.9810  err=-0.0373
+[VIZ] t=9.2s  y=2.0245  err=-0.0380
+[VIZ] t=9.3s  y=2.0688  err=-0.0382
+[VIZ] t=9.4s  y=2.1141  err=-0.0377
+[VIZ] t=9.5s  y=2.1602  err=-0.0367
+[VIZ] t=9.6s  y=2.2072  err=-0.0352
+[VIZ] t=9.7s  y=2.2549  err=-0.0333
+[VIZ] t=9.8s  y=2.3033  err=-0.0310
+[VIZ] t=9.9s  y=2.3525  err=-0.0284
+[VIZ] t=10.0s  y=2.4022  err=-0.0256
+[VIZ] t=10.1s  y=2.4525  err=-0.0225
+[VIZ] t=10.2s  y=2.5033  err=-0.0194
+[VIZ] t=10.3s  y=2.5545  err=-0.0162
+[VIZ] t=10.4s  y=2.6061  err=-0.0131
+[VIZ] t=10.5s  y=2.6581  err=-0.0101
+[VIZ] t=10.6s  y=2.7103  err=-0.0072
+[VIZ] t=10.7s  y=2.7628  err=-0.0046
+[VIZ] t=10.8s  y=2.8155  err=-0.0022
+[VIZ] t=10.9s  y=2.8684  err=-0.0002
+[VIZ] t=11.0s  y=2.9214  err=0.0015
+[VIZ] t=11.1s  y=2.9746  err=0.0029
+[VIZ] t=11.2s  y=3.0280  err=0.0038
+[VIZ] t=11.3s  y=3.0815  err=0.0044
+[VIZ] t=11.4s  y=3.1351  err=0.0046
+[VIZ] t=11.5s  y=3.1890  err=0.0045
+[VIZ] t=11.6s  y=3.2429  err=0.0039
+[VIZ] t=11.7s  y=3.2971  err=0.0031
+[VIZ] t=11.8s  y=3.3515  err=0.0020
+[VIZ] t=11.9s  y=3.4062  err=0.0007
+[VIZ] t=12.0s  y=3.4612  err=-0.0009
+[VIZ] t=12.1s  y=3.5165  err=-0.0026
+[VIZ] t=12.2s  y=3.5721  err=-0.0044
+[VIZ] t=12.3s  y=3.6281  err=-0.0063
+[VIZ] t=12.4s  y=3.6845  err=-0.0082
+[VIZ] t=12.5s  y=3.7414  err=-0.0100
+[VIZ] t=12.6s  y=3.7987  err=-0.0118
+[VIZ] t=12.7s  y=3.8566  err=-0.0134
+[VIZ] t=12.8s  y=3.9149  err=-0.0149
+[VIZ] t=12.9s  y=3.9738  err=-0.0162
+[VIZ] t=13.0s  y=4.0333  err=-0.0173
+[VIZ] t=13.1s  y=4.0932  err=-0.0182
+[VIZ] t=13.2s  y=4.1538  err=-0.0188
+[VIZ] t=13.3s  y=4.2149  err=-0.0192
+[VIZ] t=13.4s  y=4.2765  err=-0.0193
+[VIZ] t=13.5s  y=4.3387  err=-0.0192
+[VIZ] t=13.6s  y=4.4014  err=-0.0189
+[VIZ] t=13.7s  y=4.4646  err=-0.0183
+[VIZ] t=13.8s  y=4.5283  err=-0.0176
+[VIZ] t=13.9s  y=4.5925  err=-0.0167
+[VIZ] t=14.0s  y=4.6572  err=-0.0157
+[VIZ] t=14.1s  y=4.7223  err=-0.0146
+[VIZ] t=14.2s  y=4.7878  err=-0.0134
+[VIZ] t=14.3s  y=4.8537  err=-0.0122
+[VIZ] t=14.4s  y=4.9199  err=-0.0109
+[VIZ] t=14.5s  y=4.9866  err=-0.0097
+[VIZ] t=14.6s  y=5.0535  err=-0.0086
+[VIZ] t=14.7s  y=5.1208  err=-0.0075
+[VIZ] t=14.8s  y=5.1884  err=-0.0065
+[VIZ] t=14.9s  y=5.2563  err=-0.0056
+[VIZ] t=15.0s  y=5.3244  err=-0.0049
+[VIZ] Saved: results_Kp2.0_Ki0.1_Kd0.5_curved_run1.png
+
+=== KPI SUMMARY (Kp2.0_Ki0.1_Kd0.5_curved_run1) ===
+Max overshoot    : 0.2057 m
+Final error      : 0.0049 m
+Steady-state err : 0.0202 m
+Sim duration     : 15.0 s
++=+ XLVIP-INFO: XlTlmMessageLayer::disconnectFromServer():
++=+    Disconnecting this remote client from TLM fabric server:
++=+        clientId=:remoteSession2
+[?2004h]0;ubuntu@ip-10-10-8-146: ~/LineFollower_Successubuntu@ip-10-10-8-146:~/LineFollower_Success$ 
